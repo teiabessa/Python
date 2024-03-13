@@ -158,6 +158,7 @@ class Message(object):
 
 class PlaintextMessage(Message):
     def __init__(self, text, shift):
+  
         '''
         Initializes a PlaintextMessage object        
         
@@ -174,31 +175,57 @@ class PlaintextMessage(Message):
         Hint: consider using the parent class constructor so less 
         code is repeated
         '''
-        pass #delete this line and replace with your code here
+           # Call the parent class constructor
+        Message.__init__(self, text)
+       
+        self.shift = shift
+        self.encrypting_dict = self.build_shift_dict(shift)
+        self.message_text_encrypted = self.apply_shift(shift)
 
     def get_shift(self):
-        '''
+         '''
         Used to safely access self.shift outside of the class
         
         Returns: self.shift
         '''
-        pass #delete this line and replace with your code here
+         return self.shift
 
+    def get_encrypting_dict(self):
+        #Return a copy of the encrypting_dict to prevent mutation of the original dictionary.
+        return self.encrypting_dict.copy()
+    
+          
+
+    '''
+    def get_message_text_encrypted(self):
+        encrypted_text = ""
+        for char in self.text:
+            if char.isalpha():
+                encrypted_char = self.encrypting_dict[char]
+                encrypted_text += encrypted_char
+            else:
+                encrypted_text += char
+        return encrypted_text
+    '''
+
+
+    
     def get_encrypting_dict(self):
         '''
         Used to safely access a copy self.encrypting_dict outside of the class
         
         Returns: a COPY of self.encrypting_dict
         '''
-        pass #delete this line and replace with your code here
-
+        return self.encrypting_dict.copy()
+    
     def get_message_text_encrypted(self):
         '''
         Used to safely access self.message_text_encrypted outside of the class
         
         Returns: self.message_text_encrypted
         '''
-        pass #delete this line and replace with your code here
+        return self.apply_shift(self.shift)
+    
 
     def change_shift(self, shift):
         '''
@@ -211,7 +238,9 @@ class PlaintextMessage(Message):
 
         Returns: nothing
         '''
-        pass #delete this line and replace with your code here
+        self.shift = shift
+        self.encrypting_dict = self.build_shift_dict(shift)
+        self.message_text_encrypted = self.apply_shift(shift)
 
 
 class CiphertextMessage(Message):
